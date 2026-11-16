@@ -36,13 +36,22 @@ class ConfidenceMeter extends StatelessWidget {
             ],
           ),
           const SizedBox(height: AppSpacing.sm),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(AppRadius.pill),
-            child: LinearProgressIndicator(
-              value: confidence,
-              minHeight: 10,
-              color: color,
-              backgroundColor: palette.border,
+          // A barra "enche" até o valor para reforçar a leitura do nível;
+          // sem animação quando o sistema pede menos movimento.
+          TweenAnimationBuilder<double>(
+            tween: Tween(begin: 0, end: confidence),
+            duration: MediaQuery.of(context).disableAnimations
+                ? Duration.zero
+                : const Duration(milliseconds: 700),
+            curve: Curves.easeOutCubic,
+            builder: (context, value, _) => ClipRRect(
+              borderRadius: BorderRadius.circular(AppRadius.pill),
+              child: LinearProgressIndicator(
+                value: value,
+                minHeight: 10,
+                color: color,
+                backgroundColor: palette.border,
+              ),
             ),
           ),
         ],

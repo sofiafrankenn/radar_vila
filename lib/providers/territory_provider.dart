@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 
+import 'package:radar_vila/core/utils/formatters.dart';
 import 'package:radar_vila/data/api_exception.dart';
 import 'package:radar_vila/data/local/local_store.dart';
 import 'package:radar_vila/data/repositories/territory_repository.dart';
@@ -58,6 +59,18 @@ class TerritoryProvider extends ChangeNotifier {
     if (_status == LoadStatus.loading) return;
     _status = LoadStatus.loading;
     _errorMessage = null;
+    // Na primeira carga, mostra a cópia salva enquanto busca dados novos:
+    // o app fica útil na hora, mesmo com a rede lenta ou fora do ar.
+    if (_snapshot == null) {
+      final cached = _repository.readCache();
+      if (cached != null) {
+        _snapshot = cached.copyWith(
+          warning: 'Atualizando… exibindo dados salvos em '
+              '${Fmt.dateTime(cached.fetchedAt)}.',
+        );
+        _recompute();
+      }
+    }
     notifyListeners();
     try {
       _snapshot = await _repository.load(

@@ -36,6 +36,11 @@ class OverviewScreen extends StatelessWidget {
         title: const AppLogo(size: 30),
         actions: [
           IconButton(
+            tooltip: 'Mapa do território',
+            icon: const Icon(Icons.map_outlined),
+            onPressed: () => Navigator.pushNamed(context, AppRoutes.map),
+          ),
+          IconButton(
             tooltip: 'Sobre os dados e limitações',
             icon: const Icon(Icons.info_outline),
             onPressed: () => Navigator.pushNamed(context, AppRoutes.about),
@@ -47,7 +52,20 @@ class OverviewScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: _body(context, territory),
+      // Transição suave entre carregando → erro → conteúdo.
+      body: AnimatedSwitcher(
+        duration: MediaQuery.of(context).disableAnimations
+            ? Duration.zero
+            : const Duration(milliseconds: 300),
+        child: KeyedSubtree(
+          key: ValueKey(territory.hasData
+              ? 'data'
+              : territory.status == LoadStatus.error
+                  ? 'error'
+                  : 'loading'),
+          child: _body(context, territory),
+        ),
+      ),
     );
   }
 
