@@ -9,4 +9,5 @@ class AppRoutes {
   static const String occurrenceForm = '/ocorrencias/nova';
   static const String thresholds = '/limiares';
   static const String about = '/sobre';
+  static const String map = '/mapa';
 }

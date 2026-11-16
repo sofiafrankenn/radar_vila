@@ -27,6 +27,15 @@ class OccurrenceProvider extends ChangeNotifier {
     return counts;
   }
 
+  /// Ocorrências agrupadas por sub-região (usado no mapa).
+  Map<String, List<Occurrence>> get byRegion {
+    final groups = <String, List<Occurrence>>{};
+    for (final o in _items) {
+      groups.putIfAbsent(o.region, () => []).add(o);
+    }
+    return groups;
+  }
+
   Future<void> load() async {
     _status = LoadStatus.loading;
     _errorMessage = null;

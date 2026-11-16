@@ -20,6 +20,16 @@ class TerritoryInfo {
     'Chácara Klabin',
     'Jardim Vila Mariana',
   ];
+
+  /// Ponto central APROXIMADO de cada sub-região, usado só no mapa.
+  /// Nenhuma ocorrência guarda coordenada: o ponto é da região, não da pessoa.
+  static const Map<String, (double, double)> regionCenters = {
+    'Vila Mariana (centro)': (-23.5891, -46.6346),
+    'Vila Clementino': (-23.5985, -46.6440),
+    'Paraíso': (-23.5760, -46.6420),
+    'Chácara Klabin': (-23.5885, -46.6255),
+    'Jardim Vila Mariana': (-23.5805, -46.6300),
+  };
 }
 
 /// Referências usadas no indicador de benefício social.

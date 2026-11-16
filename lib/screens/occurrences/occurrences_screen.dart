@@ -78,7 +78,16 @@ class OccurrencesScreen extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Ocorrências cidadãs')),
+      appBar: AppBar(
+        title: const Text('Ocorrências cidadãs'),
+        actions: [
+          IconButton(
+            tooltip: 'Ver ocorrências no mapa',
+            icon: const Icon(Icons.map_outlined),
+            onPressed: () => Navigator.pushNamed(context, AppRoutes.map),
+          ),
+        ],
+      ),
       floatingActionButton: items.isEmpty
           ? null
           : FloatingActionButton.extended(

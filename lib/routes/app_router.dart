@@ -6,6 +6,7 @@ import 'package:radar_vila/screens/about/about_data_screen.dart';
 import 'package:radar_vila/screens/alerts/alert_detail_screen.dart';
 import 'package:radar_vila/screens/dashboard/dashboard_screen.dart';
 import 'package:radar_vila/screens/indicator/indicator_detail_screen.dart';
+import 'package:radar_vila/screens/map/territory_map_screen.dart';
 import 'package:radar_vila/screens/not_found_screen.dart';
 import 'package:radar_vila/screens/occurrences/occurrence_form_screen.dart';
 import 'package:radar_vila/screens/settings/thresholds_screen.dart';
@@ -36,6 +37,8 @@ class AppRouter {
         page = const ThresholdsScreen();
       case AppRoutes.about:
         page = const AboutDataScreen();
+      case AppRoutes.map:
+        page = const TerritoryMapScreen();
       default:
         page = const NotFoundScreen();
     }
