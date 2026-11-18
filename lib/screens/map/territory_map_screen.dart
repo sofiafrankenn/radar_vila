@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:radar_vila/core/constants.dart';
 import 'package:radar_vila/core/theme/app_spacing.dart';
 import 'package:radar_vila/core/theme/theme_context.dart';
+import 'package:radar_vila/core/utils/formatters.dart';
 import 'package:radar_vila/models/occurrence.dart';
 import 'package:radar_vila/providers/load_status.dart';
 import 'package:radar_vila/providers/occurrence_provider.dart';
@@ -95,6 +96,10 @@ class _TerritoryMapScreenState extends State<TerritoryMapScreen> {
   }
 }
 
+String _pendingText(int n) => n == 1
+    ? '1 alerta aguardando decisão vale'
+    : '$n alertas aguardando decisão valem';
+
 /// Cor do marcador conforme a quantidade de registros na região.
 Color _levelColor(BuildContext context, int count) {
   final p = context.palette;
@@ -123,7 +128,7 @@ class _RegionMap extends StatelessWidget {
     final total = byRegion.values.fold<int>(0, (s, l) => s + l.length);
     return Semantics(
       label: 'Mapa da Vila Mariana com ${TerritoryInfo.regions.length} '
-          'sub-regiões e $total ocorrências. A lista abaixo traz os mesmos '
+          'sub-regiões e ${Fmt.count(total, 'ocorrência', 'ocorrências')}. A lista abaixo traz os mesmos '
           'dados em texto.',
       child: FlutterMap(
         mapController: controller,
@@ -195,7 +200,7 @@ class _RegionMarker extends StatelessWidget {
     return Semantics(
       button: true,
       selected: selected,
-      label: '$region: $count ocorrências',
+      label: '$region: ${Fmt.count(count, 'ocorrência', 'ocorrências')}',
       child: GestureDetector(
         onTap: onTap,
         child: Center(
@@ -264,8 +269,8 @@ class _RegionList extends StatelessWidget {
         if (pendingAlerts > 0) ...[
           const SizedBox(height: AppSpacing.md),
           AppCard(
-            semanticLabel: '$pendingAlerts alertas aguardando decisão '
-                'valem para todo o distrito.',
+            semanticLabel: '${_pendingText(pendingAlerts)} para todo o '
+                'distrito.',
             child: Row(
               children: [
                 Icon(Icons.notifications_active_outlined,
@@ -273,9 +278,8 @@ class _RegionList extends StatelessWidget {
                 const SizedBox(width: AppSpacing.md),
                 Expanded(
                   child: Text(
-                    '$pendingAlerts alertas aguardando decisão valem para todo '
-                    'o distrito (água, energia e clima não têm medição por '
-                    'sub-região).',
+                    '${_pendingText(pendingAlerts)} para todo o distrito '
+                    '(água, energia e clima não têm medição por sub-região).',
                   ),
                 ),
               ],
@@ -370,7 +374,8 @@ class _RegionTile extends StatelessWidget {
     return AppCard(
       accent: selected ? context.colors.primary : color,
       onTap: onTap,
-      semanticLabel: '$region, ${items.length} ocorrências. '
+      semanticLabel: '$region, '
+          '${Fmt.count(items.length, 'ocorrência', 'ocorrências')}. '
           '${summary.isEmpty ? '' : '$summary. '}'
           '${selected ? 'Selecionada no mapa.' : 'Toque para ver no mapa.'}',
       child: Column(

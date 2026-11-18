@@ -32,6 +32,10 @@ class Fmt {
   }
 
   /// 0.58 -> "58%".
+  /// "1 alerta" / "3 alertas".
+  static String count(int n, String singular, String plural) =>
+      '$n ${n == 1 ? singular : plural}';
+
   static String percent(double ratio, {int decimals = 0}) =>
       '${number(ratio * 100, decimals: decimals)}%';
 

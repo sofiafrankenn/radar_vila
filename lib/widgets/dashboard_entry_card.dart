@@ -36,7 +36,7 @@ class DashboardEntryCard extends StatelessWidget {
       onTap: () =>
           Navigator.pushNamed(context, AppRoutes.dashboard, arguments: type),
       semanticLabel: 'Painel ${type.label}. ${main?.name ?? ''}: $valueText. '
-          '${alerts.isEmpty ? 'Sem alertas' : '${alerts.length} alertas'}. '
+          '${alerts.isEmpty ? 'Sem alertas' : Fmt.count(alerts.length, 'alerta', 'alertas')}. '
           'Toque para abrir.',
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

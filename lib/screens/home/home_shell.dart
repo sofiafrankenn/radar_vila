@@ -1,6 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
+import 'package:radar_vila/core/utils/formatters.dart';
 import 'package:radar_vila/models/alert.dart';
 import 'package:radar_vila/providers/territory_provider.dart';
 import 'package:radar_vila/routes/app_routes.dart';
@@ -119,8 +120,9 @@ class _HomeShellState extends State<HomeShell> {
               child: const Icon(Icons.notifications),
             ),
             label: 'Alertas',
-            tooltip:
-                pending > 0 ? '$pending alertas aguardando decisão' : 'Alertas',
+            tooltip: pending > 0
+                ? '${Fmt.count(pending, 'alerta', 'alertas')} aguardando decisão'
+                : 'Alertas',
           ),
           const NavigationDestination(
             icon: Icon(Icons.campaign_outlined),
