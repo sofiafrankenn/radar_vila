@@ -1,8 +1,10 @@
 === GLOBAL SOLUTION 2026.2 ===
 Disciplina: Cross-Platform Application Development
 Desafio: Territory Predictive Insights
-Integrante 1: Sofia Franken | RM: 562767
-Integrante 2: [Nome Completo] | RM: [XXXXXX]
-Integrante 3: [Nome Completo] | RM: [XXXXXX]
-GitHub: https://github.com/...
-Vídeo: https://...
+
+Integrante 1: Ana Luiza Santos Bertão | RM: 563171
+Integrante 2: Sofia Bill Franken | RM: 562767
+Integrante 3: Leonardo Luster Gomes | RM: 564448
+
+GitHub: https://github.com/sofiafrankenn/radar_vila
+Vídeo: https://youtube.com/shorts/6f6wZs6xw2o

@@ -24,9 +24,9 @@
 
 | Nome completo | RM |
 |---|---|
-| Sofia Franken | 562767 |
-| [Nome do integrante 2] | [RM] |
-| [Nome do integrante 3] | [RM] |
+| Ana Luiza Santos Bertão | 563171 |
+| Sofia Bill Franken | 562767 |
+| Leonardo Luster Gomes | 564448 |
 
 ---
 
@@ -42,18 +42,19 @@
 | <img src="assets/screenshots/10_ocorrencias.png" width="230"><br>**Ocorrências cidadãs** | <img src="assets/screenshots/11_formulario.png" width="230"><br>**Formulário com validação** | <img src="assets/screenshots/12_limiares.png" width="230"><br>**Configuração de limiares** |
 | <img src="assets/screenshots/13_ajustes.png" width="230"><br>**Ajustes e acessibilidade** | <img src="assets/screenshots/14_sobre.png" width="230"><br>**Sobre os dados e limitações** | <img src="assets/screenshots/15_offline.png" width="230"><br>**Modo sem conexão (cache)** |
 | <img src="assets/screenshots/16_escuro.png" width="230"><br>**Modo escuro** | <img src="assets/screenshots/17_alto_contraste.png" width="230"><br>**Alto contraste** | <img src="assets/screenshots/18_tablet.png" width="230"><br>**Layout em tablet** |
+| <img src="assets/screenshots/19_mapa.png" width="230"><br>**Mapa de ocorrências por sub-região** | | |
 
 ---
 
 ## 4. Funcionalidades
 
-- [x] 10 telas com rotas nomeadas e passagem de parâmetros (visão geral → dashboard → indicador → alerta)
+- [x] 12 telas com rotas nomeadas e passagem de parâmetros (visão geral → dashboard → indicador → alerta)
 - [x] 3 dashboards territoriais (Água, Energia, Clima) com gráficos de histórico, previsão e linha de limiar
 - [x] Seletor de período (7/14/30 dias), cards de KPI e variação semanal
 - [x] Alertas preditivos por regressão linear, regra de limiar, previsão meteorológica e detecção de anomalia
 - [x] Cada alerta mostra **evidências**, **nível de confiança** (com explicação do cálculo), **limitações** e explicação em linguagem simples
 - [x] Aviso visível de que os alertas não substituem a decisão humana
-- [x] Registro da decisão do gestor (em análise / ação encaminhada / descartado) com justificativa obrigatória
+- [x] Registro da decisão do gestor (em análise / ação encaminhada / descartado), com justificativa obrigatória para encaminhar ou descartar
 - [x] Estado global (Provider) compartilhado entre visão geral, dashboards, detalhes e alertas
 - [x] Estados de carregamento, erro (com "tentar novamente") e lista vazia em todas as telas de dados
 - [x] Dados reais da API Open-Meteo + API simulada de consumo
@@ -66,9 +67,12 @@
 - [x] Ajuste de tamanho de fonte, rótulos para leitores de tela, severidade por ícone + texto (não só cor)
 - [x] Consentimento explícito, anonimização e direito de apagar dados
 - [x] Layout responsivo (1 a 3 colunas)
+- [x] Mapa (OpenStreetMap) com as ocorrências por sub-região, sempre em posição aproximada
+- [x] Aviso no app quando surge um novo alerta crítico, com atalho para a justificativa
+- [x] Animações com propósito (troca de estado, barra de confiança, marcador selecionado), desligadas quando o sistema pede menos movimento
 - [x] Testes automatizados de unidade e de widget
 
-**Diferenciais implementados:** dados reais (Open-Meteo) · modo escuro e alto contraste · testes automatizados.
+**Diferenciais implementados:** dados reais (Open-Meteo) · mapa por região · aviso de alerta crítico no app · animações · modo escuro e alto contraste · testes automatizados · [APK de release](https://github.com/sofiafrankenn/radar_vila/releases/tag/v1.0.0).
 
 ---
 
@@ -138,7 +142,7 @@ Nenhuma ação é executada automaticamente. Cada alerta traz uma *sugestão par
 - O app **não coleta nome, telefone, e-mail nem endereço**. O cidadão recebe um apelido aleatório (`Cidadão #K7QX`).
 - CEP opcional, truncado para os 5 primeiros dígitos (`04101-***`); localização apenas por sub-região.
 - A descrição é bloqueada se contiver e-mail, telefone ou CPF.
-- Tudo é salvo somente no aparelho; nada é enviado a servidores.
+- As ocorrências ficam só no aparelho. O app apenas baixa dados públicos de clima (Open-Meteo) e do mapa (OpenStreetMap), sem enviar dados pessoais.
 
 **Acessibilidade**
 - Paletas com contraste verificado e tema de **alto contraste** (claro e escuro).
@@ -146,6 +150,7 @@ Nenhuma ação é executada automaticamente. Cada alerta traz uma *sugestão par
 - Ajuste de tamanho de fonte no app (até 160%), somado à fonte do sistema.
 - `Semantics` em cards, gráficos (resumo textual), chips, medidores e botões; cabeçalhos marcados como `header`.
 - Severidade indicada por **cor + ícone + texto**.
+- As animações são desligadas quando o sistema pede menos movimento.
 - Alvos de toque com no mínimo 48 dp.
 - Layout responsivo testado em celular e tablet.
 
@@ -155,11 +160,13 @@ Nenhuma ação é executada automaticamente. Cada alerta traz uma *sugestão par
 
 | Escolha | Justificativa |
 |---|---|
-| **Flutter 3 + Material 3** | Uma base de código para Android e iOS; componentes acessíveis por padrão. |
+| **Flutter 3.50 + Material 3** | Uma base de código para Android e iOS; componentes acessíveis por padrão. |
+| **material_ui / cupertino_ui** | A partir do Flutter 3.50 os componentes Material e Cupertino são pacotes separados; usá-los evita as APIs descontinuadas. |
 | **Provider** | Simples e oficial para separar estado global (`SettingsProvider`, `TerritoryProvider`, `OccurrenceProvider`) de estado local (filtros, período, formulários em `StatefulWidget`). |
 | **http** | Cliente leve para consumir a API Open-Meteo. |
 | **shared_preferences** | Persistência local suficiente para cache, ocorrências, limiares e preferências, sem servidor. |
 | **fl_chart** | Gráficos de linha e barras customizáveis, com tooltip e linha de limiar. |
+| **flutter_map + latlong2** | Mapa com tiles do OpenStreetMap, sem chave de API, para mostrar as ocorrências por sub-região. |
 | **flutter_localizations** | Datas e componentes em pt-BR. |
 | **Open-Meteo** | API pública real, gratuita e sem chave — nenhuma credencial no repositório. |
 | **ThemeExtension (`AppPalette`)** | Cores semânticas por tema (claro, escuro, alto contraste) sem estilos repetidos. |
@@ -186,23 +193,20 @@ Fluxo: `Serviços → Repositório (cache/offline) → Provider → Telas`. O `A
 
 ## 8. Como executar
 
-**Pré-requisitos:** Flutter 3.24 ou superior, Android Studio ou VS Code, emulador ou celular.
+**Pré-requisitos:** Flutter 3.50 ou superior, Android Studio ou VS Code, emulador ou celular.
 
 ```bash
 # 1. Clonar
-git clone https://github.com/[usuario]/radar_vila.git
+git clone https://github.com/sofiafrankenn/radar_vila.git
 cd radar_vila
 
-# 2. Gerar as pastas de plataforma (android/ios), caso não existam
-flutter create . --project-name radar_vila --platforms=android,ios
-
-# 3. Instalar dependências
+# 2. Instalar dependências
 flutter pub get
 
-# 4. Rodar
+# 3. Rodar
 flutter run
 
-# 5. Testes
+# 4. Testes
 flutter test
 ```
 
@@ -212,8 +216,7 @@ flutter test
 flutter run --dart-define=CLIMATE_API_URL=https://api.open-meteo.com/v1/forecast
 ```
 
-**APK de release.** Confirme que `android/app/src/main/AndroidManifest.xml` contém
-`<uses-permission android:name="android.permission.INTERNET"/>` e execute:
+**APK de release.** O APK pronto para instalar está em [Releases](https://github.com/sofiafrankenn/radar_vila/releases/tag/v1.0.0) (Android 7.0 ou superior). Para gerar o seu:
 
 ```bash
 flutter build apk --release
@@ -225,7 +228,9 @@ flutter build apk --release
 
 ## 9. Vídeo
 
-▶️ **[Assista à demonstração](https://link-do-video)**
+<a href="https://youtube.com/shorts/6f6wZs6xw2o"><img src="https://i.ytimg.com/vi/6f6wZs6xw2o/hq2.jpg" alt="Miniatura do vídeo de demonstração do RadarVila" width="320"></a>
+
+▶️ **[Assista à demonstração](https://youtube.com/shorts/6f6wZs6xw2o)**
 
 ---
 
